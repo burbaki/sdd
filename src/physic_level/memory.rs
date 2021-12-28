@@ -1,6 +1,5 @@
 use crate::config::CELLS_PER_PAGE;
 use crate::config::PAGES_PER_BLOCK;
-use crate::config::TOTAL_BLOCK;
 use crate::physic_level::memory_components::*;
 use rand::Rng;
 
@@ -76,7 +75,7 @@ mod test {
     use std::convert::TryInto;
     #[test]
     fn fluctuate_should_return_fluctuated_value() -> () {
-        let mut target: &dyn FluctuareT = &ProdFluctuate {};
+        let target: &dyn FluctuareT = &ProdFluctuate {};
         let count = 101;
         let value = 127;
 
@@ -88,7 +87,7 @@ mod test {
     }
     #[test]
     fn fluctuate_should_not_overflow() -> () {
-        let mut target: &dyn FluctuareT = &ProdFluctuate {};
+        let target: &dyn FluctuareT = &ProdFluctuate {};
         let count = 100;
         let value = 0;
 
