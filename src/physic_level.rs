@@ -1,2 +1,2 @@
-mod memory_components;
 pub mod memory;
+mod memory_components;

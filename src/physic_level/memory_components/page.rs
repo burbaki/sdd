@@ -30,7 +30,7 @@ impl<const PS: usize> Page<PS> {
             self.cells[i] = 0;
         }
         self.write_count = self.write_count + 1;
-    }    
+    }
 }
 #[cfg(test)]
 mod test {
