@@ -3,33 +3,33 @@ use crate::config::PAGES_PER_BLOCK;
 use crate::physic_level::memory_components::*;
 use rand::Rng;
 
-trait MemoryT {
+pub trait Memory {
     fn read(&self, address: Address) -> &[u8; CELLS_PER_PAGE];
     fn program(&mut self, address: Address, data: [u8; CELLS_PER_PAGE]) -> ();
     fn reset(&mut self, lock_id: usize) -> ();
 }
 
-struct Memory {
+struct MemoryImpl {
     fluctuator: Box<dyn FluctuareT>,
     blocks: Vec<block::Block<CELLS_PER_PAGE, PAGES_PER_BLOCK>>,
 }
 
-impl Memory {
-    fn new(fluctuator: Box<dyn FluctuareT>, blocks_amount: usize) -> Memory {
+impl MemoryImpl {
+    fn new(fluctuator: Box<dyn FluctuareT>, blocks_amount: usize) -> MemoryImpl {
         let mut blocks = Vec::new();
 
         for _ in 1..blocks_amount {
             blocks.push(block::Block::new())
         }
 
-        Memory {
+        MemoryImpl {
             fluctuator: fluctuator,
             blocks: blocks,
         }
     }
 }
 
-impl<'a> MemoryT for Memory {
+impl Memory for MemoryImpl {
     fn read(&self, address: Address) -> &[u8; CELLS_PER_PAGE] {
         let Address(block_id, page_id) = address;
         self.blocks[block_id].read(page_id)
@@ -99,7 +99,7 @@ mod test {
 
     #[test]
     fn program_should_save_value() -> () {
-        let mut target = Memory::new(Box::new(ZERO_FLU), 8);
+        let mut target = MemoryImpl::new(Box::new(ZERO_FLU), 8);
         let mut cells = Vec::new();
         for i in 0..CELLS_PER_PAGE {
             cells.push(i as u8);
@@ -113,7 +113,7 @@ mod test {
     }
     #[test]
     fn reset_should_delete_values_in_block() -> () {
-        let mut target = Memory::new(Box::new(ZERO_FLU), 8);
+        let mut target = MemoryImpl::new(Box::new(ZERO_FLU), 8);
         let mut cells = Vec::new();
         for i in 0..CELLS_PER_PAGE {
             cells.push(i as u8);
@@ -142,4 +142,4 @@ mod test {
 
 // Address(block page)
 #[derive(Clone, Copy)]
-struct Address(usize, usize);
+pub struct Address(usize, usize);

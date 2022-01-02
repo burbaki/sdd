@@ -1,5 +1,6 @@
 mod memory_state;
 mod byte_encoder;
+mod memory_controller;
 pub enum CellType {
     Single,
     Double,
@@ -17,4 +18,11 @@ impl CellType {
             Penta => 5,
         }
     }
+}
+
+
+enum CellState {
+    Empty,
+    Set(CellType),
+    ResetPending,    
 }
