@@ -8,8 +8,8 @@ trait MemoryController {
     fn read_bits(&self, adress: Address, cell_type: CellType) -> Vec<bool>;
 }
 
-pub struct MemoryControllerImpl {
-    byte_encoder: Box<dyn ByteEncoder>,
+pub struct MemoryControllerImpl<const PS: usize> {
+    byte_encoder: Box<dyn ByteEncoder<PS>>,
     metric_storage: Box<dyn MetricStorage>,
     memory: Box<dyn Memory>
 }
